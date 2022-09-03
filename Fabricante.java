@@ -7,6 +7,7 @@ public class Fabricante extends Thread{
     private Semaphore mutexVendas, itens, itens2, mutexEntregas;
     private FilaVenda vendas;
     private FilaEntrega entregas;
+    int numeroEntregas;
 
     public Semaphore limitadorFabricacao;
 
@@ -18,7 +19,6 @@ public class Fabricante extends Thread{
         this.itens2 = itens2;
         this.mutexEntregas = mutexEntregas;
         
-        // Limitador do fabricante de acordo com o tipo de fabricante
         if (this.nomeFabricante == 'B') {
             limitadorFabricacao = new Semaphore(1);
         } else {
@@ -38,6 +38,7 @@ public class Fabricante extends Thread{
                     mutexVendas.acquire();
                         Venda newVenda = vendas.vendas.get(0);
                         vendas.vendas.remove(vendas.vendas.get(0));
+                        System.out.println("Fabricante: " + nomeFabricante + " Loja: " + newVenda.loja.nomeLoja);
                     mutexVendas.release();
 
                     Thread.sleep(random.nextInt(1000)); //arrumar intervalo conforme a tabela no .pdf
@@ -48,13 +49,12 @@ public class Fabricante extends Thread{
                         // O realese está sendo aplicado na classe Fabricação; 
                     
                     // Cria entrega
-                    Entrega entrega = new Entrega();
-                    entrega.numeroEntrega++;
+                    Entrega entrega = new Entrega(numeroEntregas);
                     entrega.venda = newVenda;
                     
                     mutexEntregas.acquire();
+                        numeroEntregas++;
                         entregas.entregas.add(entrega);
-                        //System.out.println("Fila de entregas: " + entregas.entregas.size());
                     mutexEntregas.release();
 
                     Thread.sleep(random.nextInt(1000)); //arrumar intervalo conforme a tabela no .pdf

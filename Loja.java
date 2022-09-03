@@ -31,9 +31,10 @@ public class Loja extends Thread {
                 contadorVendas++;
 
                 mutex.acquire();
+                    System.out.println("Produto: " + venda.nomeProduto + " Pedido: " + contadorVendas + nomeLoja);
                     vendas.vendas.add(venda);
                 mutex.release();
-                itens.release();//sinalizar
+                itens.release();
 
                 Thread.sleep(1000);
 

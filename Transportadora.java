@@ -35,13 +35,10 @@ public class Transportadora extends Thread {
                     mutexEntregas.acquire();
                         Entrega newEntrega = entregas.entregas.get(0);
                         entregas.entregas.remove(entregas.entregas.get(0));
+                        System.out.println("Transportadora: " + nomeTransportadora);
                     mutexEntregas.release();
 
                     new Transporte(this, newEntrega).start();
-
-                    //System.out.println("Saiu da transportadora: " + this.nomeTransportadora);
-  
-                    System.out.println("Produto: " + newEntrega.venda.nomeProduto + " Pedido: " + newEntrega.venda.loja.contadorVendas +  newEntrega.venda.loja.nomeLoja);
                     
                 espacos.release();
                 
